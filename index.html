@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Temperature Convertor</title>
+    <style>
+      .exchange {
+        -ms-transform: rotate(180deg);
+        transform: rotate(180deg);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container mx-auto">
+      <div class="flex flex-col items-center justify-center h-screen -mt-10">
+        <h1 class="text-3xl text-center font-bold text-blue-500">
+          Temperature Convertor
+        </h1>
+        <div
+          class="bg-slate-800 py-20 px-10 rounded-lg mt-4 flex flex-col items-center justify-center"
+        >
+          <div class="flex justify-center items-center gap-10">
+            <div class="flex flex-col">
+              <div class="flex items-center">
+                <input
+                  type="number"
+                  id="fahrenheit"
+                  class="border-2 border-gray-300 p-2 rounded-lg focus:outline-none focus:border-blue-500"
+                  placeholder="Fahrenheit"
+                />
+              </div>
+              <div>
+                <label for="fahrenheit" class="text-slate-50 text-sm"
+                  >Fahrenheit</label
+                >
+              </div>
+            </div>
+            <div class="flex flex-col">
+              <img
+                id="exchange"
+                src="exchange.png"
+                alt="exchange"
+                class="-mt-6 w-10 h-10"
+              />
+            </div>
+            <div class="flex flex-col">
+              <div class="flex items-center">
+                <input
+                  type="number"
+                  id="celsius"
+                  class="border-2 border-gray-300 p-2 rounded-lg focus:outline-none focus:border-blue-500"
+                  placeholder="Celsius"
+                />
+              </div>
+              <div>
+                <label for="celsius" class="text-slate-50 text-sm"
+                  >Celsius</label
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+        <footer
+        class="text-center mt-5"
+        id="checkAuthor"
+      >
+        <p class="text-sm">
+          Made with ❤️ by
+          <a href="https://github.com/sauravhathi" class="font-semibold"
+            >@sauravhathi</a
+          >
+        </p>
+      </footer>
+      </div>
+    </div>
+  </body>
+  <script>
+    const fahrenheit = document.getElementById("fahrenheit");
+    const celsius = document.getElementById("celsius");
+    const exchange = document.getElementById("exchange");
+
+    if (fahrenheit) {
+      fahrenheit.addEventListener("input", function () {
+        celsius.value = ((fahrenheit.value - 32) * 5) / 9;
+      });
+    }
+
+    if (celsius) {
+      celsius.addEventListener("input", function () {
+        fahrenheit.value = (celsius.value * 9) / 5 + 32;
+      });
+    }
+
+    const checkAuthor = document.getElementById("checkAuthor");
+    if (checkAuthor.children[0].children[0].textContent === "@sauravhathi") {
+    } else {
+      window.location.href = "https://github.com/sauravhathi";
+    }
+
+    if (exchange) {
+      exchange.addEventListener("click", function () {
+
+        if (fahrenheit.value  == "" && celsius.value == "") {
+          alert("Please enter a value");
+        }
+        else {
+          exchange.classList.toggle("exchange");
+          let temp = fahrenheit.value;
+          fahrenheit.value = celsius.value;
+          celsius.value = temp;
+        }
+      });
+    }
+  </script>
+</html>
+
