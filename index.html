@@ -14,59 +14,44 @@
     </style>
   </head>
   <body>
-    <div class="container mx-auto">
-      <div class="flex flex-col items-center justify-center h-screen -mt-10">
-        <h1 class="text-3xl text-center font-bold text-blue-500">
-          Temperature Convertor
-        </h1>
-        <div
-          class="bg-slate-800 py-20 px-10 rounded-lg mt-4 flex flex-col items-center justify-center"
-        >
-          <div class="flex justify-center items-center gap-10">
-            <div class="flex flex-col">
-              <div class="flex items-center">
-                <input
-                  type="number"
-                  id="fahrenheit"
-                  class="border-2 border-gray-300 p-2 rounded-lg focus:outline-none focus:border-blue-500"
-                  placeholder="Fahrenheit"
-                />
-              </div>
-              <div>
-                <label for="fahrenheit" class="text-slate-50 text-sm"
-                  >Fahrenheit</label
-                >
-              </div>
-            </div>
-            <div class="flex flex-col">
-              <img
-                id="exchange"
-                src="exchange.png"
-                alt="exchange"
-                class="-mt-6 w-10 h-10"
-              />
-            </div>
-            <div class="flex flex-col">
-              <div class="flex items-center">
-                <input
-                  type="number"
-                  id="celsius"
-                  class="border-2 border-gray-300 p-2 rounded-lg focus:outline-none focus:border-blue-500"
-                  placeholder="Celsius"
-                />
-              </div>
-              <div>
-                <label for="celsius" class="text-slate-50 text-sm"
-                  >Celsius</label
-                >
-              </div>
-            </div>
-          </div>
-        </div>
-        <footer
-        class="text-center mt-5"
-        id="checkAuthor"
+    <div class="flex flex-col justify-center h-screen -mt-10 items-center">
+      <h1 class="text-3xl text-center font-bold text-blue-500">
+        Temperature Convertor
+      </h1>
+      <div
+        class="bg-slate-800 py-20 px-10 rounded-lg mt-4 flex flex-col lg:flex-row justify-center items-center gap-10"
       >
+        <div class="flex flex-col gap-2">
+          <input
+            type="number"
+            id="fahrenheit"
+            class="border-2 border-gray-300 p-2 rounded-lg focus:outline-none focus:border-blue-500"
+            placeholder="Fahrenheit"
+          />
+          <label for="fahrenheit" class="text-slate-50 text-sm"
+            >Fahrenheit</label
+          >
+        </div>
+        <div class="flex flex-col">
+          <img
+            id="exchange"
+            src="exchange.png"
+            alt="exchange"
+            class="-mt-6 w-10 h-10"
+          />
+        </div>
+        <div class="flex flex-col gap-2">
+          <input
+            type="number"
+            id="celsius"
+            class="border-2 border-gray-300 p-2 rounded-lg focus:outline-none focus:border-blue-500"
+            placeholder="Celsius"
+          />
+          <label for="celsius" class="text-slate-50 text-sm">Celsius</label>
+        </div>
+      </div>
+      <p class="text-slate-50 text-sm mt-4" id="formula"></p>
+      <footer class="text-center mt-5" id="checkAuthor">
         <p class="text-sm">
           Made with ❤️ by
           <a href="https://github.com/sauravhathi" class="font-semibold"
@@ -74,24 +59,55 @@
           >
         </p>
       </footer>
-      </div>
     </div>
   </body>
-  <script>
-    const fahrenheit = document.getElementById("fahrenheit");
-    const celsius = document.getElementById("celsius");
-    const exchange = document.getElementById("exchange");
 
-    if (fahrenheit) {
-      fahrenheit.addEventListener("input", function () {
-        celsius.value = ((fahrenheit.value - 32) * 5) / 9;
-      });
+  <script>
+    // calculate fahrenheit to celsius
+    function calculateFahrenheitToCelsius(fahrenheit) {
+      return ((fahrenheit - 32) * 5) / 9;
     }
 
-    if (celsius) {
-      celsius.addEventListener("input", function () {
-        fahrenheit.value = (celsius.value * 9) / 5 + 32;
-      });
+    // calculate celsius to fahrenheit
+    function calculateCelsiusToFahrenheit(celsius) {
+      // document.getElementById("formula-celsius").innerHTML = `(${celsius}°C * 9/5) + 32 = ${fahrenheit.toFixed(
+      //   2
+      // )}F`;
+      return (celsius * 9) / 5 + 32;
+    }
+
+    // get ids
+    const fahrenheitInput = document.getElementById("fahrenheit");
+    const celsiusInput = document.getElementById("celsius");
+    const exchange = document.getElementById("exchange");
+
+    // add event listener to fahrenheitInput
+    fahrenheitInput.addEventListener("input", function () {
+      const fahrenheitValue = parseFloat(fahrenheitInput.value);
+      celsiusInput.value = calculateFahrenheitToCelsius(fahrenheitValue);
+
+      // display formula in footer
+      formula(fahrenheitValue);
+    });
+
+    // add event listener to celsiusInput
+    celsiusInput.addEventListener("input", function () {
+      const celsiusValue = parseFloat(celsiusInput.value);
+      fahrenheitInput.value = calculateCelsiusToFahrenheit(celsiusValue);
+
+      // display formula in footer
+      formula(fahrenheitInput.value);
+    });
+
+    function formula(value) {
+      const formula = document.getElementById("formula");
+      if (isNaN(value)) {
+        formula.innerHTML = `<span class="px-2 py-1 bg-red-500 text-white rounded-lg">Formula: (°F - 32) * 5/9 = °C</span>`;
+      } else {
+        formula.innerHTML = `<span class="px-2 py-1 bg-green-500 text-white rounded-lg">Formula: (${value}°F - 32) * 5/9 = ${calculateFahrenheitToCelsius(
+          value
+        ).toFixed(2)}°C</span>`;
+      }
     }
 
     const checkAuthor = document.getElementById("checkAuthor");
@@ -100,20 +116,24 @@
       window.location.href = "https://github.com/sauravhathi";
     }
 
+    // if exchange is clicked then swap the values of fahrenheit and celsius
     if (exchange) {
       exchange.addEventListener("click", function () {
-
-        if (fahrenheit.value  == "" && celsius.value == "") {
+        let fahrenheitValue = fahrenheitInput.value;
+        let celsiusValue = celsiusInput.value;
+        if (fahrenheitValue == "" && celsiusValue == "") {
           alert("Please enter a value");
-        }
-        else {
+        } else {
+          // add class to exchange icon
           exchange.classList.toggle("exchange");
-          let temp = fahrenheit.value;
-          fahrenheit.value = celsius.value;
-          celsius.value = temp;
+          let fahrenheitValue = fahrenheitInput.value;
+          let celsiusValue = celsiusInput.value;
+          let temp = fahrenheitValue;
+          celsiusValue = fahrenheitValue;
+          fahrenheitInput.value = calculateCelsiusToFahrenheit(celsiusValue);
+          celsiusInput.value = temp;
         }
       });
     }
   </script>
 </html>
-

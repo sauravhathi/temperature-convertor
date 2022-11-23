@@ -19,6 +19,8 @@ https://sauravhathi.github.io/temperature-convertor/
 -   Convert Fahrenheit to Celsius
 -   Convert Celsius to Fahrenheit
 -   Exchange values
+-   Formula is displayed in footer
+-   Responsive
 
 ## Author
 
